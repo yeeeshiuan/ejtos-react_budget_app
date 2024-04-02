@@ -25,6 +25,7 @@ export const AppReducer = (state, action) => {
                     ...state,
                 };
             } else {
+                console.log(state);
                 alert("Cannot increase the allocation! Out of funds");
                 return {
                     ...state
@@ -107,16 +108,19 @@ export const AppProvider = (props) => {
     }
 
     const [newBudget, setNewBudget] = useState(state.budget);
+    const [newRemaining, setNewRemaining] = useState(remaining);
+    initialState.budget = newBudget;
 
     return (
         <AppContext.Provider
             value={{
                 expenses: state.expenses,
                 budget: newBudget,
-                remaining: remaining,
+                remaining: newRemaining,
                 dispatch,
                 currency: state.currency,
-                setBudget: setNewBudget
+                setBudget: setNewBudget,
+                setRemaining: setNewRemaining
             }}
         >
             {props.children}
