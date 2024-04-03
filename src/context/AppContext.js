@@ -70,8 +70,7 @@ export const AppReducer = (state, action) => {
             state.currency = action.payload;
             return {
                 ...state
-            }
-
+            };
         default:
             return state;
     }
@@ -85,8 +84,7 @@ const initialState = {
         { id: "Sales", name: 'Sales', cost: 70 },
         { id: "Human Resource", name: 'Human Resource', cost: 40 },
         { id: "IT", name: 'IT', cost: 500 },
-    ],
-    currency: '£'
+    ]
 };
 
 // 2. Creates the context this is the thing our components import and use to get the state
@@ -97,7 +95,12 @@ export const AppContext = createContext();
 export const AppProvider = (props) => {
     const [budget, setBudget] = useState(2000);
     initialState.budget = budget;
-    
+    initialState.setBudget = setBudget;
+
+    const [currency, setCurrency] = useState('£');
+    initialState.currency = currency;
+    initialState.setCurrency = setCurrency;
+
     // 4. Sets up the app state. takes a reducer, and an initial state
     const [state, dispatch] = useReducer(AppReducer, initialState);
     let remaining = 0;
@@ -118,7 +121,8 @@ export const AppProvider = (props) => {
                 budget: budget,
                 remaining: newRemaining,
                 dispatch,
-                currency: state.currency,
+                currency: currency,
+                setCurrency: setCurrency,
                 setBudget: setBudget,
                 setRemaining: setNewRemaining
             }}
