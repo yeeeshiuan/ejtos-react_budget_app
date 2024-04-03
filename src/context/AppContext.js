@@ -79,7 +79,6 @@ export const AppReducer = (state, action) => {
 
 // 1. Sets the initial state when the app loads
 const initialState = {
-    budget: 2000,
     expenses: [
         { id: "Marketing", name: 'Marketing', cost: 50 },
         { id: "Finance", name: 'Finance', cost: 300 },
@@ -96,6 +95,9 @@ export const AppContext = createContext();
 // 3. Provider component - wraps the components we want to give access to the state
 // Accepts the children, which are the nested(wrapped) components
 export const AppProvider = (props) => {
+    const [budget, setBudget] = useState(2000);
+    initialState.budget = budget;
+    
     // 4. Sets up the app state. takes a reducer, and an initial state
     const [state, dispatch] = useReducer(AppReducer, initialState);
     let remaining = 0;
@@ -107,19 +109,17 @@ export const AppProvider = (props) => {
         remaining = state.budget - totalExpenses;
     }
 
-    const [newBudget, setNewBudget] = useState(state.budget);
     const [newRemaining, setNewRemaining] = useState(remaining);
-    initialState.budget = newBudget;
 
     return (
         <AppContext.Provider
             value={{
                 expenses: state.expenses,
-                budget: newBudget,
+                budget: budget,
                 remaining: newRemaining,
                 dispatch,
                 currency: state.currency,
-                setBudget: setNewBudget,
+                setBudget: setBudget,
                 setRemaining: setNewRemaining
             }}
         >
