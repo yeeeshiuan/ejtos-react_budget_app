@@ -31,6 +31,31 @@ export const AppReducer = (state, action) => {
                     ...state
                 }
             }
+        case 'SUB_EXPENSE':
+            let isSuccess = false;
+            state.expenses.map((currentExp)=> {
+                if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
+                    currentExp.cost = currentExp.cost - action.payload.cost;
+                    console.log(action.payload.name);
+                    console.log(currentExp.cost);
+                    console.log(action.payload.cost);
+                    isSuccess = true;
+                    return currentExp;
+                }
+                return currentExp
+            })
+            action.type = "DONE";
+            if( isSuccess === false ) {
+                console.log(state);
+                alert("Not enough to decrease the cost!");
+                return {
+                    ...state
+                }
+            } else {
+                return {
+                    ...state,
+                };
+            }
             case 'RED_EXPENSE':
                 const red_expenses = state.expenses.map((currentExp)=> {
                     if (currentExp.name === action.payload.name && currentExp.cost - action.payload.cost >= 0) {
